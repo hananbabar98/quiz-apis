@@ -1,0 +1,28 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root@localhost/quiz?schema=public"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum QuizStatus {
+  draft
+  publish
+}
+
+model Quiz {
+  id            Int     @id @default(autoincrement())
+  name          String
+  description   String
+  status        QuizStatus
+  quizQuestion  QuizQuestion[]
+}
+
+model QuizQuestion {
+  id          Int     @id @default(autoincrement())
+  questions   Json
+  quiz        Quiz    @relation(fields: [quizId], references: [id])
+  quizId      Int
+}
